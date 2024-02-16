@@ -4,8 +4,12 @@ import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -49,6 +53,9 @@ public class WeatherService {
 		 * 
 		 * 
 		 * */
+		
+		@Cacheable(value = "WEATHER_CONSULTANTS", key = "#city")
+		@Scheduled(fixedDelay = 10 * 60 * 1000 ,  initialDelay = 500)
 		public ResponseEntity<?> weatherCurrent(String city, String username){
 			WeatherResponse weatherResponse = new WeatherResponse();
 			
@@ -76,6 +83,10 @@ public class WeatherService {
 	        return new ResponseEntity<>(weatherResponse, HttpStatus.OK);
 		}
 		
+		@Caching(evict = {
+				@CacheEvict(value = "consults", allEntries = true)
+		})
+		
 		private void saveWeatherCurrent(String city, String username, WheaterDataDTO weatherDataDTO) {
 			
 			City ciudad = cityService.obtenerCiudadPorNombre(city); 
@@ -102,7 +113,8 @@ public class WeatherService {
 		 * 
 		 * 
 		 * */
-
+		
+		
 		public ResponseEntity<?> weatherForecast(String city, String username){
 			ForecastDataDTO forecastDataDTO = new ForecastDataDTO();
 			

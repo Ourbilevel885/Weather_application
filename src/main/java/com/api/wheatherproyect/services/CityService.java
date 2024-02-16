@@ -20,6 +20,7 @@ public class CityService {
 	@Autowired
 	private final CityRepository cityRepository;
 	
+	
 	public void processCityWeather(WheaterDataDTO weatherDataDTO){
 		
 		Optional<City> existsCity = cityRepository.findByName(weatherDataDTO.getName());
@@ -33,7 +34,7 @@ public class CityService {
 		}
 	}
 	
-
+	
 	private void saveCityWeather(City city, WheaterDataDTO weatherDataDTO) {
 
 		city = City.builder()
