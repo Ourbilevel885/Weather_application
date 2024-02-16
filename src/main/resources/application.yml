@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    password: Ourking223*
+    url: jdbc:mysql://localhost:3306/pmtdb?useSSL=false&serverTimezone=UTC&AllowKeyRetrieval=true
+    username: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
